@@ -1,3 +1,5 @@
+yaml
+Copy code
 name: Python
 
 on: workflow_dispatch
@@ -17,4 +19,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-      
+        id: python-version
+
+      - name: Save Python version output
+        id: save-output
+        run: echo "${{ steps.python-version.outputs.stdout }}" > python_version.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-version-output
+          path: python_version.txt
