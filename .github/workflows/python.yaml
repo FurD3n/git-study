@@ -4,24 +4,23 @@ on: workflow_dispatch
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8","3.9","3.10"]
+        python-version: ["3.8", "3.9", "3.10"]
 
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Save Python version
-        id: save-version
-        run: |
-          echo "python-version=${{ matrix.python-version }}" >> $GITHUB_ENV
-          echo "$(python -c 'import sys; print(sys.version)')" >> $GITHUB_ENV
-      - name: Upload artifact
+      - name: Display Python version
+        id: python-version
+        run: python -c "import sys; print(sys.version)"
+      - name: Upload Python version artifact
         uses: actions/upload-artifact@v2
         with:
-          name: python-version-${{ matrix.python-version }}
-          path: ${{ runner.temp }}/python-version-${{ matrix.python-version }}
+          name: python-version
+          path: ${{ steps.python-version.outputs.stdout }}
