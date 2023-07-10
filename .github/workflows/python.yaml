@@ -19,7 +19,7 @@ jobs:
       - name: Create Python version file
         id: python-version
         run: |
-          echo "PYTHON_VERSION=$(python -c 'import sys; print(sys.version)')" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=$(python -c 'import sys; print(sys.version.replace(\"\\n\", \"\"))')" >> $GITHUB_ENV
           echo "PYTHON_VERSION_FILE=python-version.txt" >> $GITHUB_ENV
       - name: Display Python version
         run: |
