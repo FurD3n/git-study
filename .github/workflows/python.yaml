@@ -19,10 +19,10 @@ jobs:
       - name: Display Python version
         id: python-version
         run: |
-          python -c "import sys; open('python-version.txt', 'w').write(sys.version)"
+          echo "::set-output name=python-version::$(python -c "import sys; print(sys.version)")" >> python-version.txt
           cat python-version.txt
       - name: Upload Python version artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-version
-          path: ./python-version.txt
+          path: python-version.txt
