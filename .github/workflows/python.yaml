@@ -17,9 +17,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Save Python version
         id: save-version
-        run: echo "::set-output name=python-version::$(python -c 'import sys; print(sys.version)')"
+        run: |
+          echo "python-version=${{ matrix.python-version }}" >> $GITHUB_ENV
+          echo "$(python -c 'import sys; print(sys.version)')" >> $GITHUB_ENV
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-version-${{ matrix.python-version }}
-          path: ${{ steps.save-version.outputs.python-version }}
+          path: ${{ runner.temp }}/python-version-${{ matrix.python-version }}
