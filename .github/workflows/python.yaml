@@ -17,4 +17,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Display Python version
+        id: display-version
         run: python -c "import sys; print(sys.version)"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-version-${{ matrix.python-version }}
+          path: ${{ steps.display-version.outputs.stdout }}
