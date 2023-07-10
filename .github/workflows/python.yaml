@@ -16,13 +16,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Display Python version
+      - name: Create Python version file
         id: python-version
         run: |
-          echo "::set-output name=python-version::$(python -c "import sys; print(sys.version)")" >> python-version.txt
-          cat python-version.txt
+          echo "PYTHON_VERSION=$(python -c 'import sys; print(sys.version)')" >> $GITHUB_ENV
+          echo "PYTHON_VERSION_FILE=python-version.txt" >> $GITHUB_ENV
+      - name: Display Python version
+        run: |
+          echo "${{ env.PYTHON_VERSION }}" >> ${{ env.PYTHON_VERSION_FILE }}
+          cat ${{ env.PYTHON_VERSION_FILE }}
       - name: Upload Python version artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-version
-          path: python-version.txt
+          path: ${{ env.PYTHON_VERSION_FILE }}
