@@ -22,7 +22,7 @@ jobs:
           python -c "import sys; print(sys.version.replace('\n', ''))" >> python-version.txt
           cat python-version.txt
       - name: Upload Python version artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: python-version-${{ matrix.python-version }}
           path: python-version.txt
