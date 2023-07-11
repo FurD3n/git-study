@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8","3.9","3.10"]
+        python-version: ["3.8", "3.9", "3.10"]
 
     steps:
       - uses: actions/checkout@v3
@@ -16,12 +16,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Save Python version
-        id: save-version
+      - name: Display Python version
+        id: python-version
         run: |
-          echo "::set-output name=python-version::$(python -c 'import sys; print(sys.version)')"
-      - name: Upload artifact
+          python -c "import sys; print(sys.version.replace('\n', ''))" >> python-version.txt
+          cat python-version.txt
+      - name: Upload Python version artifact
         uses: actions/upload-artifact@v3
         with:
           name: python-version-${{ matrix.python-version }}
-          path: ${{ steps.save-version.outputs.python-version }}
+          path: python-version.txt
